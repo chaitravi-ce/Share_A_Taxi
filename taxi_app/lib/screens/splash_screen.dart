@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:http/http.dart' as http;
+import 'package:taxi_app/screens/info_screen.dart';
 import 'package:taxi_app/screens/main_screen.dart';
 import '../models/profilemodel.dart';
 import 'package:taxi_app/screens/welcome_screen.dart';
@@ -25,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     print(token);
     if(token == null){
-      Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeName);
+      Navigator.of(context).pushReplacementNamed(InfoScreen.routeName);
     }else {
       String email = prefs.get('email');
       final url = 'https://samelocationsametaxi.firebaseio.com/users.json';
@@ -68,8 +70,8 @@ class _SplashScreenState extends State<SplashScreen> {
       body:Center(
         child: JumpingText(
           'Loading...',
-          style: TextStyle(
-            fontSize: 35,
+          style: GoogleFonts.grenze(
+            fontSize: 40,
             fontWeight: FontWeight.bold,
             color: Theme.of(context).primaryColor,
           ),

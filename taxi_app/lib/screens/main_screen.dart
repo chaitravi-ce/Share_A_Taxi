@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../providers/request.dart';
@@ -39,7 +40,15 @@ class _MainScreenState extends State<MainScreen> {
       items.add(
         DropdownMenuItem(
           value: type, 
-          child: Text(type, style: TextStyle(color: Theme.of(context).primaryColor),)
+          child: UiContainer(
+            Text(
+              type, 
+              textAlign: TextAlign.center,
+              style: GoogleFonts.galada(color: Theme.of(context).primaryColor),
+            ),
+            Theme.of(context).accentColor,
+            130
+          )
         )
       );
     } 
@@ -49,11 +58,18 @@ class _MainScreenState extends State<MainScreen> {
   int _groupValue = -1;
   Widget _myRadioButton({String title, int value, Function onChanged}) {
   return RadioListTile(
-    activeColor: Theme.of(context).primaryColor,
+    activeColor: Theme.of(context).primaryColor, 
     value: value,
     groupValue: _groupValue,
     onChanged: onChanged,
-    title: Text(title),
+    title: Text(
+      title, 
+      textAlign: TextAlign.start,
+      style: GoogleFonts.galada(
+        color: Theme.of(context).primaryColor,
+        fontSize: 18,
+      ),
+    ),
   );
   }
 
@@ -179,7 +195,12 @@ class _MainScreenState extends State<MainScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Same Location, Same Taxi'),
+        title: Text(
+          'Same Location-Same Taxi',
+          style: GoogleFonts.grenze(
+            fontSize: 25
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(children: <Widget>[
@@ -189,36 +210,44 @@ class _MainScreenState extends State<MainScreen> {
             alignment: Alignment(0.0,0.0),
             width: size.width*0.9,
             child: UiContainer(
-              TextField(
-                controller: _locationStartController,
-                decoration: InputDecoration(
-                  hintText: 'Select a Start Location',
-                  icon: Icon(Icons.search, color: Theme.of(context).primaryColor),
-                  focusColor: Theme.of(context).primaryColor,
-                  labelText: _pickedStartLocation!=null ? getStartAddress(_pickedStartLocation.latitude, _pickedStartLocation.longitude).toString() : "Select a Start Location",
-                ),
+              Container(
+                child: Row(children: <Widget>[
+                  Icon(Icons.search, color: Theme.of(context).primaryColor,),
+                  SizedBox(width: 10,),
+                  Text(
+                    'Select a Start Location :',
+                    style: GoogleFonts.grenze(
+                      fontSize: 24,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  )
+                ],),
               ),
               Theme.of(context).accentColor,
-              size.width*0.9
+              size.width*0.8
             ),
           ),
           LocationInput(_selectStartPlace),
           Container(
             margin: EdgeInsets.all(5),
             alignment: Alignment(0.0,0.0),
-            width: size.width*0.9,
+            width: size.width*0.8,
             child: UiContainer(
-              TextField(
-                controller: _locationEndController,
-                decoration: InputDecoration(
-                  hintText: 'Select An End Location',
-                  icon: Icon(Icons.search, color: Theme.of(context).primaryColor,),
-                  focusColor: Theme.of(context).primaryColor,
-                  labelText: _pickedEndLocation!=null ? getEndAddress(_pickedEndLocation.latitude, _pickedEndLocation.longitude).toString() : "Select an End Location",
-                ),
+              Container(
+                child: Row(children: <Widget>[
+                  Icon(Icons.search, color: Theme.of(context).primaryColor,),
+                  SizedBox(width: 10,),
+                  Text(
+                    'Select an End Location :',
+                    style: GoogleFonts.grenze(
+                      fontSize: 24,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  )
+                ],),
               ),
               Theme.of(context).accentColor,
-              size.width*0.9
+              size.width*0.8
             ),
           ),
           LocationInputEnd(_selectEndPlace),
@@ -227,7 +256,13 @@ class _MainScreenState extends State<MainScreen> {
             alignment: Alignment.center,
             child: UiContainer(
               FlatButton(
-                child: Text('Show Locations on map', style: TextStyle(color: Colors.white),),
+                child: Text(
+                  'Show my Route', 
+                  style: GoogleFonts.grenze(
+                    color: Colors.white,
+                    fontSize: 22
+                  ),
+                ),
                 onPressed: ()async{
                   if(_pickedStartLocation == null || _pickedEndLocation == null){
                     showErrorDialog('Start Location and Destination should be selected');
@@ -242,7 +277,7 @@ class _MainScreenState extends State<MainScreen> {
                 },
               ),
               Theme.of(context).primaryColor,
-              size.width*0.6
+              size.width*0.8
             )
           ),
           Container(
@@ -252,10 +287,10 @@ class _MainScreenState extends State<MainScreen> {
               children: <Widget>[
                 Text(
                   'Select A Mode',
-                  style: TextStyle(
+                  style: GoogleFonts.grenze(
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                    fontSize: 22,
                     fontStyle: FontStyle.italic
                   ),
                 ),
@@ -279,11 +314,11 @@ class _MainScreenState extends State<MainScreen> {
           child: UiContainer(
             Column(children: <Widget>[
               Text(
-                'Do you want to Ride Now',
-                style: TextStyle(
+                'Do you want to Ride Now ?',
+                style: GoogleFonts.grenze(
                   color: Theme.of(context).primaryColor,
                   fontWeight: FontWeight.bold,
-                  fontSize: 16,
+                  fontSize: 20,
                   fontStyle: FontStyle.italic
                 ),
               ),
@@ -324,10 +359,10 @@ class _MainScreenState extends State<MainScreen> {
               children: <Widget>[
                 Text(
                   'Are you already in the vehicle?',
-                  style: TextStyle(
+                  style: GoogleFonts.grenze(
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                    fontSize: 20,
                     fontStyle: FontStyle.italic
                   ),
                 ),
@@ -361,10 +396,10 @@ class _MainScreenState extends State<MainScreen> {
                 children: <Widget>[
                   Text(
                     'Select a Time-Slot',
-                    style: TextStyle(
+                    style: GoogleFonts.grenze(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontSize: 20,
                       fontStyle: FontStyle.italic
                     ),
                   ),
@@ -386,7 +421,14 @@ class _MainScreenState extends State<MainScreen> {
         ),
         UiContainer(
         FlatButton(
-          child: Text('Search for a Co-Passenger', style: TextStyle(color: Colors.white),),
+          child: Text(
+            'Search for a Co-Passenger', 
+            style: GoogleFonts.grenze(
+              color: Colors.white,
+              fontSize: 23,
+              fontStyle: FontStyle.italic
+            ),
+          ),
           onPressed: (){
             print('--------------');
             if(_pickedStartLocation == null || _pickedEndLocation == null || selectedtype == null || selectedreply == null || (selectedResponse == null && selectedTime == null)){

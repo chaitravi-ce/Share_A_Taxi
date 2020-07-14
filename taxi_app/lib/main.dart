@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:taxi_app/screens/info_screen.dart';
 import './screens/loginScreen.dart';
 import './screens/welcome_screen.dart';
 import './screens/signup_screen.dart';
@@ -19,20 +20,13 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider.value(
-          value: Users()
-        ),
-        ChangeNotifierProvider.value(
-          value: Request()
-        ),
-        ChangeNotifierProvider.value(
-          value: Auth()
-        )
+        providers: [
+        ChangeNotifierProvider.value(value: Users()),
+        ChangeNotifierProvider.value(value: Request()),
+        ChangeNotifierProvider.value(value: Auth())
       ],
       child: MaterialApp(
         title: 'Same Location, Same Taxi',
@@ -43,16 +37,17 @@ class MyApp extends StatelessWidget {
         ),
         home: SplashScreen(),
         routes: {
-          WelcomeScreen.routeName : (ctx) => WelcomeScreen(),
-          LoginScreen.routeName : (ctx) => LoginScreen(),
-          SplashScreen.routeName : (ctx) => SplashScreen(),
-          SignUpScreen.routeName : (ctx) => SignUpScreen(),
-          MainScreen.routeName : (ctx) => MainScreen(),
-          ProfileScreen.routeName : (ctx) => ProfileScreen(),
-          BillSPlitterScreen.routeName : (ctx) => BillSPlitterScreen(),
-          TaxiRatesScreen.routeName : (ctx) => TaxiRatesScreen(),
-          RickshawRatesScreen.routeName : (ctx) => RickshawRatesScreen(),
-          RideRequests.routeName : (ctx) => RideRequests(),
+          WelcomeScreen.routeName: (ctx) => WelcomeScreen(),
+          LoginScreen.routeName: (ctx) => LoginScreen(),
+          SplashScreen.routeName: (ctx) => SplashScreen(),
+          SignUpScreen.routeName: (ctx) => SignUpScreen(),
+          MainScreen.routeName: (ctx) => MainScreen(),
+          ProfileScreen.routeName: (ctx) => ProfileScreen(),
+          BillSPlitterScreen.routeName: (ctx) => BillSPlitterScreen(),
+          TaxiRatesScreen.routeName: (ctx) => TaxiRatesScreen(),
+          RickshawRatesScreen.routeName: (ctx) => RickshawRatesScreen(),
+          RideRequests.routeName: (ctx) => RideRequests(),
+          InfoScreen.routeName : (ctx) => InfoScreen()
         },
       )
     );

@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../models/app_drawer.dart';
 import '../models/profilemodel.dart';
 import '../models/save_image.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:foldable_sidebar/foldable_sidebar.dart';
 
 class ProfileScreen extends StatefulWidget {
 
@@ -14,7 +16,58 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  FSBStatus drawerStatus;
 
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+
+      child: Scaffold(
+        body: FoldableSidebarBuilder(
+          drawerBackgroundColor: Theme.of(context).primaryColor,
+          drawer: AppDrawer(),
+          screenContents: Profile(),
+          status: drawerStatus,
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Theme.of(context).primaryColor,
+          child: Icon(Icons.menu,color: Colors.white,),
+          onPressed: () {
+            setState(() {
+              drawerStatus = drawerStatus == FSBStatus.FSB_OPEN ? FSBStatus.FSB_CLOSE : FSBStatus.FSB_OPEN;
+            });
+          }
+        ),
+      ),
+    );
+  }
+  
+}
+
+// ignore: camel_case_types
+class getClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = new Path();
+
+    path.lineTo(0.0, size.height / 1.9);
+    path.lineTo(size.width + 125, 0.0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return true;
+  }
+}
+
+class Profile extends StatefulWidget {
+  @override
+  _ProfileState createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
   File _imageFile;
   final picker = ImagePicker();
   Image imageFromPrefs;
@@ -100,7 +153,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     String name = Profilee.mydefineduser['name'];
     String contactNo = Profilee.mydefineduser['contactNo'];
     return Scaffold(
-      appBar: AppBar(title: Text('Your Profile'),),
+      appBar: AppBar(title: Text('Your Profile', style: GoogleFonts.grenze(fontSize: 25,),)),
+      drawer: AppDrawer(),
       body: new Stack(
       children: <Widget>[
         ClipPath(
@@ -200,25 +254,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
       ],
     ),
-    drawer: AppDrawer(),
+    //drawer: AppDrawer(),
     );
-  }
-}
-
-// ignore: camel_case_types
-class getClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    var path = new Path();
-
-    path.lineTo(0.0, size.height / 1.9);
-    path.lineTo(size.width + 125, 0.0);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return true;
   }
 }

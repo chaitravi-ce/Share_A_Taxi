@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxi_app/models/app_drawer.dart';
 
 class RickshawRatesScreen extends StatelessWidget {
@@ -10,7 +11,7 @@ class RickshawRatesScreen extends StatelessWidget {
 
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(title: Text('Rickshaw Rates'),),
+      appBar: AppBar(title: Text('Rickshaw Rates', style: GoogleFonts.grenze(fontSize: 25),),),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[

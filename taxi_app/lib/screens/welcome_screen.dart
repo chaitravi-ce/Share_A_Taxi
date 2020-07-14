@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import './loginScreen.dart';
 import './signup_screen.dart';
 
@@ -30,8 +31,13 @@ class WelcomeScreen extends StatelessWidget {
                   height: size.height*0.4,
                 ),
                 SizedBox(height: size.height*0.04,),
-                Text('Welcome', style: TextStyle(fontSize: 40, fontStyle: FontStyle.italic),),
-                SizedBox(height: size.height*0.04,),
+                Text(
+                  'Welcome', 
+                  style: GoogleFonts.grenze(
+                    fontSize: 50, 
+                    fontStyle: FontStyle.italic),
+                  ),
+                SizedBox(height: size.height*0.02,),
                 Container(
                   width: size.width*0.8,
                   child: ClipRRect(

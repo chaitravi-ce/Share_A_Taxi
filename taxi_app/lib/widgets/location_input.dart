@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import '../screens/map_screen.dart';
@@ -52,13 +53,13 @@ class _LocationInputState extends State<LocationInput> {
       children: <Widget>[
         FlatButton.icon(
           icon: Icon(Icons.location_on,),
-          label: Text('Current Location'),
+          label: Text('Current Location',style: GoogleFonts.galada(fontSize: 18),),
           textColor: Theme.of(context).primaryColor,
           onPressed: _getCurrentUserLocation,
         ),
         FlatButton.icon(
           icon: Icon(Icons.map,),
-          label: Text('Select on Map'),
+          label: Text('Select on Map',style: GoogleFonts.galada(fontSize: 18),),
           textColor: Theme.of(context).primaryColor,
           onPressed: _selectOnMap,
         ),
@@ -106,7 +107,7 @@ class _LocationInputEndState extends State<LocationInputEnd> {
   Widget build(BuildContext context) {
     return FlatButton.icon(
       icon: Icon(Icons.map,),
-      label: Text('Select on Map'),
+      label: Text('Select on Map',style: GoogleFonts.galada(fontSize: 18),),
       textColor: Theme.of(context).primaryColor,
       onPressed: _selectOnMap
     );

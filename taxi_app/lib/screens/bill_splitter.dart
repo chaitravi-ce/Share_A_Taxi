@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../models/app_drawer.dart';
 import '../widgets/ui_Container.dart';
 
@@ -59,7 +60,7 @@ class BillSPlitterScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text('Bill Splitter'),),
+      appBar: AppBar(title: Text('Bill Splitter', style: GoogleFonts.grenze(fontSize: 25),),),
         body: Container(
           alignment: Alignment.center,
           child: Column(
@@ -76,6 +77,7 @@ class BillSPlitterScreen extends StatelessWidget {
                 onFieldSubmitted: (_){
                   FocusScope.of(context).requestFocus(peopleFocus);
                 },
+                style: GoogleFonts.galada(),
               ),
               Theme.of(context).accentColor,
               size.width*0.9,
@@ -88,6 +90,7 @@ class BillSPlitterScreen extends StatelessWidget {
                   icon: Icon(Icons.people, color: Theme.of(context).primaryColor,),
                   hintText: 'No of People'
                 ),
+                style: GoogleFonts.galada(),
                 focusNode: peopleFocus,
                 onSubmitted: (_){
                   calculateAmount();
@@ -98,7 +101,13 @@ class BillSPlitterScreen extends StatelessWidget {
             ),
             UiContainer(
               FlatButton(
-                child: Text('Calculate', style: TextStyle(color: Colors.white)),
+                child: Text(
+                  'Calculate', 
+                  style: GoogleFonts.grenze(
+                    color: Colors.white,
+                    fontSize: 20
+                  )
+                ),
                 onPressed: () {
                   calculateAmount();
                 }

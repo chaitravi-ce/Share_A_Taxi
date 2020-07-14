@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../models/place_location.dart';
@@ -31,7 +32,7 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Map'),
+        title: Text('Your Map', style: GoogleFonts.grenze(fontSize: 25),),
         actions: <Widget>[
           if (widget.isSelecting)
             IconButton(

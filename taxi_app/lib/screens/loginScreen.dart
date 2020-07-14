@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -172,13 +173,13 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           SingleChildScrollView(
             child: Column(children: <Widget>[
-              SizedBox(height: size.height*0.1),
-              Text('LOGIN', style: TextStyle(
-                fontSize: 30, 
+              SizedBox(height: size.height*0.08),
+              Text('LOGIN', style: GoogleFonts.grenze(
+                fontSize: 32, 
                 fontStyle: FontStyle.italic,
                 fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: size.height*0.05,),
+              SizedBox(height: size.height*0.03,),
               SvgPicture.asset("assets/icons/login.svg"),
               SizedBox(height: size.height*0.03,),
               Form(
@@ -187,6 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 UiContainer(
                   TextFormField(
                     controller: _usernameController,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       icon: Icon(Icons.person, color: Theme.of(context).primaryColor,),
                       hintText: 'Username (Email ID)'
@@ -197,6 +199,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     validator: (value) {
                       if (value.isEmpty) {
                         return 'Username should not be empty';
+                      }
+                      if(!value.contains('@')){
+                        return 'Enter a Valid Username';
                       }
                       return null;
                     },

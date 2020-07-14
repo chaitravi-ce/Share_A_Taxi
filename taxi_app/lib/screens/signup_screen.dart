@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'loginScreen.dart';
@@ -210,8 +211,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
           SingleChildScrollView(
             child: Column(children: <Widget>[
               SizedBox(height: size.height*0.1,),
-              Text('SIGN UP', style: TextStyle(
-                fontSize: 30, 
+              Text('SIGN UP', style: GoogleFonts.grenze(
+                fontSize: 40, 
                 fontWeight: FontWeight.bold,
                 fontStyle: FontStyle.italic
               ),),
@@ -223,6 +224,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Column(children: <Widget>[
                   UiContainer(
                     TextFormField(
+                      autovalidate: true,
                       decoration: InputDecoration(
                         icon: Icon(Icons.person, color: Theme.of(context).primaryColor,),
                         hintText: 'Name'
@@ -233,7 +235,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       controller: _nameController,
                       validator: (value){
                         if(value.isEmpty){
-                          return 'Enter Name';
+                          return 'Name should not be empty';
                         }
                         return null;
                       },
@@ -243,6 +245,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   UiContainer(
                     TextFormField(
+                      autovalidate: true,
                       decoration: InputDecoration(
                         icon: Icon(Icons.contact_phone, color: Theme.of(context).primaryColor,),
                         hintText: 'Contact No.'
@@ -252,6 +255,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       onFieldSubmitted: (_) {
                         FocusScope.of(context).requestFocus(_usernamefocus);
                       },
+                      validator: (value){
+                        if(value.isEmpty){
+                          return 'Contact Number should not be empty';
+                        }
+                        if(value.length != 10){
+                          return 'Enter a valid Contact Number';
+                        }
+                        return null;
+                      },
                       controller: _noController,
                     ),
                     Theme.of(context).accentColor,
@@ -259,21 +271,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   UiContainer(
                     TextFormField(
+                      autovalidate: true,
                       decoration: InputDecoration(
                         icon: Icon(Icons.account_circle, color: Theme.of(context).primaryColor,),
                         hintText: 'Username (Email ID)'
                       ),
                       focusNode: _usernamefocus,
+                      keyboardType: TextInputType.emailAddress,
                       onFieldSubmitted: (_) {
                         FocusScope.of(context).requestFocus(_pass1focus);
                       },
                       controller: _usernameController,
+                      validator: (value){
+                        if(value.isEmpty){
+                          return 'Username should not be empty';
+                        }
+                        return null;
+                      },
                     ),
                     Theme.of(context).accentColor,
                     size.width*0.8,
                   ),
                   UiContainer(
                     TextFormField(
+                      autovalidate: true,
                       obscureText: _obscureText,
                       decoration: InputDecoration(
                         icon: Icon(Icons.lock, color: Theme.of(context).primaryColor,),
@@ -284,6 +305,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         hintText: 'Password',
                       ),
+                      validator: (value){
+                        if(value.isEmpty){
+                          return 'Password should not be empty';
+                        }
+                        return null;
+                      },
                       focusNode: _pass1focus,
                       onFieldSubmitted: (_) {
                         FocusScope.of(context).requestFocus(_pass2focus);
@@ -295,6 +322,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   UiContainer(
                     TextFormField(
+                      autovalidate: true,
                       obscureText: _obscureText1,
                       decoration: InputDecoration(
                         icon: Icon(Icons.lock, color: Theme.of(context).primaryColor,),
