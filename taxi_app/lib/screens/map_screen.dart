@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_webservice/places.dart';
 
 import '../models/place_location.dart';
 
@@ -43,24 +45,58 @@ class _MapScreenState extends State<MapScreen> {
             ),
         ],
       ),
-      body: GoogleMap(
-        initialCameraPosition: CameraPosition(
-          target: LatLng(
-            widget.initialLocation.latitude,
-            widget.initialLocation.longitude,
+      body: Stack(
+        children: <Widget>[
+          GoogleMap(
+            initialCameraPosition: CameraPosition(
+              target: LatLng(
+                widget.initialLocation.latitude,
+                widget.initialLocation.longitude,
+              ),
+              zoom: 13,
+            ),
+            onTap: widget.isSelecting ? _selectLocation : null,
+            markers: (_pickedLocation == null && widget.isSelecting) ? null : {
+              Marker(
+                markerId: MarkerId('L'),
+                position: _pickedLocation ?? LatLng(
+                  widget.initialLocation.latitude,
+                  widget.initialLocation.longitude,
+                ),
+              ),
+            },
           ),
-          zoom: 13,
-        ),
-        onTap: widget.isSelecting ? _selectLocation : null,
-        markers: (_pickedLocation == null && widget.isSelecting) ? null : {
-          Marker(
-            markerId: MarkerId('L'),
-            position: _pickedLocation ?? LatLng(
-              widget.initialLocation.latitude,
-              widget.initialLocation.longitude,
+          Positioned(
+            top: 15,
+            left: 5,
+            child: Container(
+              color: Theme.of(context).accentColor,
+              height: 50,
+              width: 400,
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Enter Location',
+                ),
+                onTap: ()async{
+                  const GOOGLE_API_KEY = 'AIzaSyBKMhWmeHSRe7zKin5xt-IdHoerfQleKT8';
+                  try{
+                    print('===================================================pp');
+                    Prediction p = await PlacesAutocomplete.show(
+                      context: context, 
+                      apiKey: GOOGLE_API_KEY,
+                      language: "en",
+                      components: [Component(Component.country,"in")]
+                    );
+                    print('====================================');
+                  }catch(error){
+                    print('===============================================');
+                    print(error);
+                  }
+                },
+              ),
             ),
           ),
-        },
+        ],
       ),
     );
   }

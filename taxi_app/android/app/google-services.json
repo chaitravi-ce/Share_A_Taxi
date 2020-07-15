@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1055421609257",
+    "firebase_url": "https://samelocationsametaxi.firebaseio.com",
+    "project_id": "samelocationsametaxi",
+    "storage_bucket": "samelocationsametaxi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055421609257:android:3d37e9e02fb391025d3338",
+        "android_client_info": {
+          "package_name": "com.example.taxi_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1055421609257-b9j8jli644angec5kjl0r79ts0teoq1g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzIKe-FRb6Z0_28obA9IJ2LJeai8fc9LQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1055421609257-b9j8jli644angec5kjl0r79ts0teoq1g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

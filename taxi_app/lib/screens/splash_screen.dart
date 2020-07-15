@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 import 'package:taxi_app/screens/info_screen.dart';
 import 'package:taxi_app/screens/main_screen.dart';
 import '../models/profilemodel.dart';
-import 'package:taxi_app/screens/welcome_screen.dart';
 
 class SplashScreen extends StatefulWidget {
 
