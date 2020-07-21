@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:taxi_app/models/chatbox_helper.dart';
+import 'package:taxi_app/screens/chat_screen.dart';
+import '../models/profilemodel.dart';
 import '../widgets/ui_Container.dart';
 import 'package:provider/provider.dart';
 import '../providers/request.dart';
@@ -148,6 +151,27 @@ class CoPassenger extends StatelessWidget {
                     subtitle: Text(
                       passengers[index]['contactNo'],
                       style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15),
+                    ),
+                    trailing: Container(
+                      child: FlatButton(
+                        child: Text('Message'),
+                        onPressed: (){
+                          String myName = Profilee.mydefineduser['name'];
+                          String pName = passengers[index]['name'];
+                          ChatHelper chatHelper = new ChatHelper();
+                          String id = chatHelper.getChatRoomId(myName, pName);
+                          print(id);
+                          List users = [myName, pName];
+                          Map<String, dynamic> chatRoomMap = {
+                            'users' : users,
+                            'chatId' : id
+                          };
+                          chatHelper.createChatRoom(id, chatRoomMap);
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => ChatScreen(id,pName),)
+                          );
+                        },
+                      ),
                     ),
                     ),
                     Theme.of(context).accentColor,

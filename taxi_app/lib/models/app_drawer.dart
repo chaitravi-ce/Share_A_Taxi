@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:taxi_app/providers/request.dart';
 import 'package:taxi_app/screens/bill_splitter.dart';
 import 'package:provider/provider.dart';
+import 'package:taxi_app/screens/chat_list_screen.dart';
 import 'package:taxi_app/screens/ride_request_screen.dart';
 import 'package:taxi_app/screens/welcome_screen.dart';
 import '../screens/rickshaw_rates_screen.dart';
@@ -25,7 +26,18 @@ class AppDrawer extends StatelessWidget {
             automaticallyImplyLeading: false,
             backgroundColor: Color.fromRGBO(51, 0, 50, 1),
           ),
-          Divider(),
+          //Divider(),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Share A Ride', 
+              style: GoogleFonts.alice(
+                color: Color.fromRGBO(51, 0, 50, 1),
+                fontSize: 20
+              ),
+            )
+          ),
           ListTile(
             leading: Icon(Icons.people,color: Color.fromRGBO(51, 0, 50, 1)),
             title: Text('Connect to a Co-Passenger', style: GoogleFonts.alice(color: Color.fromRGBO(51, 0, 50, 1),),),
@@ -33,16 +45,6 @@ class AppDrawer extends StatelessWidget {
               Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
             },
           ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.directions_car,color: Color.fromRGBO(51, 0, 50, 1)),
-            title: Text('Your Requests', style: GoogleFonts.alice(color: Color.fromRGBO(51, 0, 50, 1),),),
-            onTap: (){ 
-              Provider.of<Request>(context,listen:false).fetchRequests();
-              Navigator.of(context).pushReplacementNamed(RideRequests.routeName);
-            },
-          ),
-          Divider(),
           ListTile(
             leading: Icon(Icons.category,color: Color.fromRGBO(51, 0, 50, 1)),
             title: Text('Bill Splitter',style: GoogleFonts.alice(color: Color.fromRGBO(51, 0, 50, 1),),),
@@ -51,6 +53,17 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           Divider(),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Mumbai Rates', 
+              style: GoogleFonts.alice(
+                color: Color.fromRGBO(51, 0, 50, 1),
+                fontSize: 20
+              ),
+            )
+          ),
           ListTile(
             leading: Icon(Icons.local_taxi,color: Color.fromRGBO(51, 0, 50, 1)),
             title: Text('Taxi Rates',style: GoogleFonts.alice(color: Color.fromRGBO(51, 0, 50, 1),),),
@@ -58,7 +71,6 @@ class AppDrawer extends StatelessWidget {
               Navigator.of(context).pushReplacementNamed(TaxiRatesScreen.routeName);
             },
           ),
-          Divider(),
           ListTile(
             leading: Icon(Icons.tram,color: Color.fromRGBO(51, 0, 50, 1)),
             title: Text('Rickshaw Rates',style: GoogleFonts.alice(color: Color.fromRGBO(51, 0, 50, 1),),),
@@ -67,14 +79,59 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           Divider(),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Account', 
+              style: GoogleFonts.alice(
+                color: Color.fromRGBO(51, 0, 50, 1),
+                fontSize: 20
+              ),
+            )
+          ),
+          ListTile(
+            leading: Icon(Icons.chat,color: Color.fromRGBO(51, 0, 50, 1)),
+            title: Text('Chat Section', style: GoogleFonts.alice(color: Color.fromRGBO(51, 0, 50, 1),),),
+            onTap: (){ 
+              Provider.of<Request>(context,listen:false).fetchRequests();
+              Navigator.of(context).pushReplacementNamed(ChatListScreen.routeName);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.directions_car,color: Color.fromRGBO(51, 0, 50, 1)),
+            title: Text('Ride Requests', style: GoogleFonts.alice(color: Color.fromRGBO(51, 0, 50, 1),),),
+            onTap: (){ 
+              Provider.of<Request>(context,listen:false).fetchRequests();
+              Navigator.of(context).pushReplacementNamed(RideRequests.routeName);
+            },
+          ),
           ListTile(
             leading: Icon(Icons.account_circle,color: Color.fromRGBO(51, 0, 50, 1)),
-            title: Text('Your Profile',style: GoogleFonts.alice(color: Color.fromRGBO(51, 0, 50, 1),),),
+            title: Text('Profile',style: GoogleFonts.alice(color: Color.fromRGBO(51, 0, 50, 1),),),
             onTap: () {
               Navigator.of(context).pushReplacementNamed(ProfileScreen.routeName);
             },
           ),
           Divider(),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Access', 
+              style: GoogleFonts.alice(
+                color: Color.fromRGBO(51, 0, 50, 1),
+                fontSize: 20
+              ),
+            )
+          ),
+          ListTile(
+            leading: Icon(Icons.settings, color: Color.fromRGBO(51, 0, 50, 1),),
+            title: Text('Settings',style: GoogleFonts.alice(color: Color.fromRGBO(51, 0, 50, 1),),),
+            onTap: () {
+              
+            },
+          ),
           ListTile(
             leading: Icon(Icons.power_settings_new, color: Color.fromRGBO(51, 0, 50, 1),),
             title: Text('Logout',style: GoogleFonts.alice(color: Color.fromRGBO(51, 0, 50, 1),),),

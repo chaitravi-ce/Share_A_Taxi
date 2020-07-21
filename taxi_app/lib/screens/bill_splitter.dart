@@ -24,37 +24,41 @@ class BillSPlitterScreen extends StatelessWidget {
       print(people);
       return amount;
     }
+
     calculateAmount(){
       String total = calculate().toString();
       print(total);
-      showModalBottomSheet(context: context, builder: (ctx){
-      return UiContainer(
-        Column(children: <Widget>[
+      showDialog(context: context, builder: (ctx){
+      return AlertDialog(
+        content: 
           Container(
-            child: Text(
-              'Amount to be paid by each person :',
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                fontStyle: FontStyle.italic
+            height: MediaQuery.of(context).size.height*0.2,
+            child: Column(children: <Widget>[
+              Container(
+                child: Text(
+                  'Amount to be paid by each person :',
+                  style: GoogleFonts.aBeeZee(
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    fontStyle: FontStyle.italic
+                  ),
+                ),
               ),
+              SizedBox(height: 10,),
+              Container(
+                child: Text(
+                  total,
+                  style: GoogleFonts.aBeeZee(
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25 
+                  ),
+                ),
+              )],
             ),
           ),
-          SizedBox(height: 10,),
-          Container(
-            child: Text(
-              total,
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 25 
-              ),
-            ),
-          )],
-        ),
-      Theme.of(context).accentColor,
-      size.width*0.8
+        
       );
       });
     }

@@ -76,46 +76,33 @@ class _MainScreenState extends State<MainScreen> {
 
   String getStartAddress(double latitude, double longitude){
    convertToStartAddress(latitude, longitude).then((value) {
-     //print("hi======================================");
-     //print(staddress);
      return staddress;
-   });
+    });
    return staddress;
   }
 
   String getEndAddress(double latitude, double longitude){
     convertToEndAddress(latitude, longitude).then((value) {
-      //print(endaddress);
       return endaddress;
-   });
+    });
    return endaddress;
   }
 
   Future<void>convertToEndAddress(double latitude, double longitude)async{
-    //print("coming here");
-
     final coordinates = new Coordinates(latitude, longitude);
     var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addresses.first;
     print(first);
     endaddress=first.addressLine.toString();
-    print(first.addressLine.runtimeType);
-    //print("=======================");
-    //print(first.toString());
     return first.addressLine;
   }
 
   Future<void>convertToStartAddress(double latitude, double longitude)async{
-    //print("coming here");
-
     final coordinates = new Coordinates(latitude, longitude);
     var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addresses.first;
     print(first);
     staddress=first.addressLine.toString();
-    print(first.addressLine.runtimeType);
-    //print("=======================");
-    //print(first.toString());
     return first.addressLine;
   }
 

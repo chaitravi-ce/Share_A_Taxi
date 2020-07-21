@@ -42,7 +42,7 @@ class Request with ChangeNotifier{
         lowerendLocLat < userData['endLocationLat'] && userData['endLocationLat'] < upperendLocLat &&
         lowerendLocLong < userData['endLocationLong'] && userData['endLocationLong'] < upperendLocLong &&
         mode == userData['mode'] && (userData['alreadyInVehicle'] == null || userData['alreadyInVehicle'] == 'No') 
-        && userData['contactNo']!=contactNo && (month2comp == month) && (day2comp == day) && diff < 10 && diff > -10
+       // && userData['contactNo']!=contactNo && (month2comp == month) && (day2comp == day) && diff < 10 && diff > -10
       ){
         print(diff);
         print(userData['name']);
