@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:taxi_app/screens/edit_profile_screen.dart';
 import '../models/app_drawer.dart';
 import '../models/profilemodel.dart';
 import '../models/save_image.dart';
@@ -21,7 +22,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-
       child: Scaffold(
         body: FoldableSidebarBuilder(
           drawerBackgroundColor: Theme.of(context).primaryColor,
@@ -145,90 +145,101 @@ class _ProfileState extends State<Profile> {
       }
     );
   }
+  String name;
+  String email;
+  String contactNo;
+
+  @override
+  void initState() {
+    loadImageFromPrefs();
+    name = Profilee.mydefineduser['name'];
+    email = Profilee.mydefineduser['username'];
+    contactNo = Profilee.mydefineduser['contactNo'];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     String email = Profilee.mydefineduser["username"];
-    String name = Profilee.mydefineduser['name'];
-    String contactNo = Profilee.mydefineduser['contactNo'];
+
+    // ignore: missing_return
+    Future<void> refresh(){
+      email = Profilee.mydefineduser["username"];
+      name = Profilee.mydefineduser['name'];
+    }
+    
     return Scaffold(
-      appBar: AppBar(title: Text('Your Profile', style: GoogleFonts.grenze(fontSize: 25,),)),
+      appBar: AppBar(
+        title: Text('My Profile', style: GoogleFonts.grenze(fontSize: 25,),),
+        actions: <Widget>[
+          IconButton(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            icon: Icon(Icons.edit, color: Colors.white,),
+            onPressed: (){
+              Navigator.of(context).pushNamed(EditProfileScreen.routeName);
+            },
+          ),  
+        ],
+      ),
       drawer: AppDrawer(),
-      body: new Stack(
-      children: <Widget>[
-        ClipPath(
-          child: Container(color: Theme.of(context).accentColor),
-          clipper: getClipper(),
-        ),
-        Positioned(
-          width: 350.0,
-          top: size.height / 5,
-          child: Column(
-            children: <Widget>[
-              Container(
-                width: 150.0,
-                height: 150.0,
-                child: _imageFile!=null ? 
-                CircleAvatar(
-                  backgroundImage: _imageFile==null ? imageFromPrefs : FileImage(_imageFile,),
-                  radius: 75,
-                ) : 
-                Text(''),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).accentColor,
-                  borderRadius: BorderRadius.all(Radius.circular(75.0)),
-                  boxShadow: [
-                    BoxShadow(blurRadius: 7.0, color: Colors.black)
-                  ]
-                )
-              ),
-              SizedBox(height: 90.0),
-              Text(
-                name,
-                style: TextStyle(
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                    color: Theme.of(context).primaryColor
-                  ),
-              ),
-              SizedBox(height: 15.0),
-              Container(
-                height: size.height*0.04,
-                width: size.width*0.6,
-                child: Material(
-                  shadowColor: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(20),
-                  elevation: 7.0,
-                  color: Theme.of(context).primaryColor,
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: Center(
-                      child: Text(
-                        email,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15
-                        ),
-                      ),
+      body: RefreshIndicator(
+        onRefresh: ()async{
+          await Future.delayed(Duration(seconds: 2));
+          refresh();
+        },
+        child: Stack(
+        children: <Widget>[
+          ClipPath(
+            child: Container(color: Theme.of(context).accentColor),
+            clipper: getClipper(),
+          ),
+          Positioned(
+            width: 350.0,
+            top: size.height / 5,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  width: 150.0,
+                  height: 150.0,
+                  child: _imageFile!=null ? 
+                  CircleAvatar(
+                    backgroundImage: _imageFile==null ? imageFromPrefs : FileImage(_imageFile,),
+                    radius: 75,
+                  ) : 
+                  Text(''),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).accentColor,
+                    borderRadius: BorderRadius.all(Radius.circular(75.0)),
+                    boxShadow: [
+                      BoxShadow(blurRadius: 7.0, color: Colors.black)
+                    ]
+                  )
+                ),
+                SizedBox(height: 90.0),
+                Text(
+                  name,
+                  style: TextStyle(
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      color: Theme.of(context).primaryColor
                     ),
-                  ),
-                ) ),
-                SizedBox(height: 25.0),
+                ),
+                SizedBox(height: 15.0),
                 Container(
                   height: size.height*0.04,
                   width: size.width*0.6,
                   child: Material(
-                    borderRadius: BorderRadius.circular(20.0),
                     shadowColor: Theme.of(context).primaryColor,
-                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(20),
                     elevation: 7.0,
+                    color: Theme.of(context).primaryColor,
                     child: GestureDetector(
                       onTap: () {},
                       child: Center(
                         child: Text(
-                          contactNo,
+                          email,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 15
@@ -236,25 +247,47 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                     ),
+                  ) ),
+                  SizedBox(height: 25.0),
+                  Container(
+                    height: size.height*0.04,
+                    width: size.width*0.6,
+                    child: Material(
+                      borderRadius: BorderRadius.circular(20.0),
+                      shadowColor: Theme.of(context).primaryColor,
+                      color: Theme.of(context).primaryColor,
+                      elevation: 7.0,
+                      child: GestureDetector(
+                        onTap: () {},
+                        child: Center(
+                          child: Text(
+                            contactNo,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
                   )
-                )
-              ],
-            )
-          ),
-          Positioned(
-            top: size.height / 3.3,
-            right: size.width*0.4,
-            child: IconButton(
-              icon: Icon(Icons.camera, color: Theme.of(context).primaryColor, size: 60,),
-              onPressed: (){
-                print('Clicked');
-                _showDialog(context);
-              },
-            )
-          ),
-      ],
+                ],
+              )
+            ),
+            Positioned(
+              top: size.height / 3.3,
+              right: size.width*0.4,
+              child: IconButton(
+                icon: Icon(Icons.camera, color: Theme.of(context).primaryColor, size: 60,),
+                onPressed: (){
+                  print('Clicked');
+                  _showDialog(context);
+                },
+              )
+            ),
+        ],
     ),
-    //drawer: AppDrawer(),
+      ),
     );
   }
 }

@@ -76,6 +76,7 @@ flutter:
     - assets/images/sharing.jpg
     - assets/images/meetPeople.jpg
     - assets/images/saveMoney.png
+    - assets/images/edit.png
     #- google_fonts/
   #   - images/a_dot_ham.jpeg
 

@@ -68,7 +68,8 @@ class CoPassenger extends StatelessWidget {
                   style: TextStyle(color: Theme.of(context).primaryColor),
                 ),
                 onPressed: () {
-                  Provider.of<Request>(context, listen: false).postRequest(startLocationLat, startLocationLong, endLocationLat, endLocationLong, mode, alreadyinVehicle, time, name, contactNo);
+                  bool isComplete = false;
+                  Provider.of<Request>(context, listen: false).postRequest(startLocationLat, startLocationLong, endLocationLat, endLocationLong, mode, alreadyinVehicle, time, name, contactNo, isComplete);
                   Navigator.of(ctx).pop();
                   Navigator.of(ctx).pushReplacementNamed(MainScreen.routeName);
                 },
@@ -107,7 +108,8 @@ class CoPassenger extends StatelessWidget {
                 ),
                 onPressed: () {
                   Navigator.of(ctx).pop();
-                  Provider.of<Request>(context, listen: false).postRequest(startLocationLat, startLocationLong, endLocationLat, endLocationLong, mode, alreadyinVehicle, time, name, contactNo);
+                  bool isComplete = false;
+                  Provider.of<Request>(context, listen: false).postRequest(startLocationLat, startLocationLong, endLocationLat, endLocationLong, mode, alreadyinVehicle, time, name, contactNo, isComplete);
                   Navigator.of(ctx).pushReplacementNamed(MainScreen.routeName);
                 },
               ),

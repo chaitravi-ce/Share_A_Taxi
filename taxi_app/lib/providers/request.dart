@@ -9,7 +9,7 @@ class Request with ChangeNotifier{
   List<Map<String,dynamic>> matchedUser = [];
   List<Map<String,dynamic>> matchedRequests = [];
 
-  Future<void> searchPassenger(BuildContext ctx, double startLocationLat, double startLocationLong, double endLocationLat, double endLocationLong, String mode, String alreadyinVehicle, DateTime time,String name, String contactNo, String username)async{
+  Future<void> searchPassenger(BuildContext ctx, double startLocationLat, double startLocationLong, double endLocationLat, double endLocationLong, String mode, String alreadyinVehicle, DateTime time,String name, String contactNo, String username, bool isComplete)async{
     final url = 'https://samelocationsametaxi.firebaseio.com/requests.json';
     print('in search fxn');
     final response = await http.get(url);
@@ -42,7 +42,8 @@ class Request with ChangeNotifier{
         lowerendLocLat < userData['endLocationLat'] && userData['endLocationLat'] < upperendLocLat &&
         lowerendLocLong < userData['endLocationLong'] && userData['endLocationLong'] < upperendLocLong &&
         mode == userData['mode'] && (userData['alreadyInVehicle'] == null || userData['alreadyInVehicle'] == 'No') 
-       // && userData['contactNo']!=contactNo && (month2comp == month) && (day2comp == day) && diff < 10 && diff > -10
+        && userData['contactNo']!=contactNo && (month2comp == month) && (day2comp == day) && diff < 10 && diff > -10
+        && userData['isComplete'] == false
       ){
         print(diff);
         print(userData['name']);
@@ -58,7 +59,7 @@ class Request with ChangeNotifier{
     );
   } 
 
-  Future<void> postRequest(double startLocationLat, double startLocationLong, double endLocationLat, double endLocationLong, String mode, String alreadyinVehicle, DateTime time, String name, String contactNo)async{
+  Future<void> postRequest(double startLocationLat, double startLocationLong, double endLocationLat, double endLocationLong, String mode, String alreadyinVehicle, DateTime time, String name, String contactNo, bool isComplete)async{
     final url = 'https://samelocationsametaxi.firebaseio.com/requests.json';
     try{
       final response = await http.post(
@@ -73,6 +74,7 @@ class Request with ChangeNotifier{
           'time' : time.toIso8601String(),
           'name' : name,
           'contactNo' : contactNo,
+          'isComplete' : isComplete
         }),
       );
       print(response);

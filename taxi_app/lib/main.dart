@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:taxi_app/screens/chat_list_screen.dart';
+import 'package:taxi_app/screens/edit_profile_screen.dart';
 import 'package:taxi_app/screens/info_screen.dart';
 import './screens/loginScreen.dart';
 import './screens/welcome_screen.dart';
@@ -49,7 +50,8 @@ class MyApp extends StatelessWidget {
           RickshawRatesScreen.routeName: (ctx) => RickshawRatesScreen(),
           RideRequests.routeName: (ctx) => RideRequests(),
           InfoScreen.routeName : (ctx) => InfoScreen(),
-          ChatListScreen.routeName : (ctx) => ChatListScreen()
+          ChatListScreen.routeName : (ctx) => ChatListScreen(),
+          EditProfileScreen.routeName : (ctx) => EditProfileScreen(),
         },
       )
     );
