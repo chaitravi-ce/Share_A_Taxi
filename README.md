@@ -6,3 +6,5 @@ Continuing Inheritance-2020 Project.
 
 * Updated UI
 * Enabled Chat Section
+* Profile Editing Enabled
+* Ride-Requests Editing Enabled
