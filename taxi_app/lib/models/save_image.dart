@@ -1,28 +1,38 @@
-import 'dart:async';
 import 'dart:convert';
+//import 'dart:io';
 import 'dart:typed_data';
+
+import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/material.dart';
 
-class SaveImage{
+const IMAGE_KEY = 'IMAGE_KEY';
 
-  static const String img_key = 'IMAGE_KEY';
+class ImageSharedPrefs {
+  static Future<bool> saveImageToPrefs(String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  static Future<bool> saveImageToPrefs(String value)async{
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.setString(img_key, value);
+    return await prefs.setString(IMAGE_KEY, value);
   }
 
-  static Future<String> getImageFromPrefs()async{
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(img_key);
+  static Future<bool> emptyPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return await prefs.clear();
   }
 
-  static String base64String(Uint8List data){
+  static Future<String> loadImageFromPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(IMAGE_KEY);
+  }
+
+  static String base64String(Uint8List data) {
     return base64Encode(data);
   }
 
-  static Image imageFromBase64(String base64String){
-    return Image.memory(base64Decode(base64String));
+  static imageFrom64BaseString(String base64String) {
+    return Image.memory(
+      base64Decode(base64String),
+      fit: BoxFit.fill,
+    );
   }
 }

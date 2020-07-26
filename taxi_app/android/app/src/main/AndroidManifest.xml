@@ -7,7 +7,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="Same Location, Same Taxi"
+        android:label="Share A Taxi"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

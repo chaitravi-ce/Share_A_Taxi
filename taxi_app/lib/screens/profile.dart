@@ -1,6 +1,8 @@
-import 'dart:io';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxi_app/screens/edit_profile_screen.dart';
 import '../models/app_drawer.dart';
 import '../models/profilemodel.dart';
@@ -68,35 +70,56 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  File _imageFile;
-  final picker = ImagePicker();
-  Image imageFromPrefs;
+  //File _imageFile;
+  //final picker = ImagePicker();
+  Image image;
 
-  loadImageFromPrefs(){
-    SaveImage.getImageFromPrefs().then((img){
-      if(img == null){
-        return;
+  getUserFromandStoreImage(String image)async{
+    final url = 'https://samelocationsametaxi.firebaseio.com/users.json';
+    final response =  await http.get(url);
+    final extractedData = json.decode(response.body) as Map<String,dynamic>;
+    if(extractedData == null){
+      print('in null');
+      return ;
+    }
+    String contactNo = Profilee.mydefineduser['contactNo'];
+    print(contactNo);
+    extractedData.forEach((userID, userData){
+      if(Profilee.mydefineduser['username'] == userData['username']){
+        print(userData);
+        final url3 = 'https://samelocationsametaxi.firebaseio.com/users/$userID.json';
+        http.patch(url3,
+          body: json.encode({
+            'image' : image,
+          })
+        );
       }
+    });
+  }
+
+  loadImageFromPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final imageKeyValue = prefs.getString(IMAGE_KEY);
+    if (imageKeyValue != null) {
+      final imageString = await ImageSharedPrefs.loadImageFromPrefs();
       setState(() {
-        imageFromPrefs = SaveImage.imageFromBase64(img);
+        image = ImageSharedPrefs.imageFrom64BaseString(imageString);
       });
-    });
+    }
   }
 
-  _openGallery()async{
-    final pickedImage = await picker.getImage(source: ImageSource.gallery);
-    setState(() {
-      _imageFile = File(pickedImage.path);
-    });
-    SaveImage.saveImageToPrefs(SaveImage.base64String(_imageFile.readAsBytesSync()));
-  }
-
-  _openCamera()async{
-    final pickedImage = await picker.getImage(source: ImageSource.camera);
-    setState(() {
-      _imageFile = File(pickedImage.path);
-    });
-    SaveImage.saveImageToPrefs(SaveImage.base64String(_imageFile.readAsBytesSync()));
+  pickImage(ImageSource source) async {
+    final _image = await ImagePicker.pickImage(source: source);
+    if (_image != null) {
+      setState(() {
+        image = Image.file(_image);
+      });
+      ImageSharedPrefs.saveImageToPrefs(ImageSharedPrefs.base64String(_image.readAsBytesSync()));
+      getUserFromandStoreImage(ImageSharedPrefs.base64String(_image.readAsBytesSync()));
+      print('ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
+    } else {
+      print('Error picking image!');
+    }
   }
 
   Future<void> _showDialog(BuildContext context){
@@ -124,8 +147,10 @@ class _ProfileState extends State<Profile> {
                     style: TextStyle(color: Theme.of(context).primaryColor)
                   ),
                   onTap: (){
-                    _openGallery();
+                   // _openGallery();
                     print('Gallery');
+                    pickImage(ImageSource.gallery);
+                    Navigator.of(context).pop();
                   },
                 ),
               ),
@@ -135,8 +160,10 @@ class _ProfileState extends State<Profile> {
                   style: TextStyle(color: Theme.of(context).primaryColor),
                 ),
                 onTap: (){
-                  _openCamera();
+                  //_openCamera();
                   print('Camera');
+                  pickImage(ImageSource.camera);
+                  Navigator.of(context).pop();
                 },
               ),
             ],),
@@ -202,9 +229,10 @@ class _ProfileState extends State<Profile> {
                 Container(
                   width: 150.0,
                   height: 150.0,
-                  child: _imageFile!=null ? 
+                  child: image!=null ? 
                   CircleAvatar(
-                    backgroundImage: _imageFile==null ? imageFromPrefs : FileImage(_imageFile,),
+                    backgroundColor: Theme.of(context).accentColor,
+                    backgroundImage: image.image,                     
                     radius: 75,
                   ) : 
                   Text(''),

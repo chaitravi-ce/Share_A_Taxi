@@ -20,7 +20,9 @@ class Users with ChangeNotifier{
           'name': user.name,
           'contactNo': user.contactNo,
           'username': user.username,
-          'password': user.password,
+          ///'password': user.password,
+          'showImage' : false,
+          'showContact' : false,
         }),
       );
       final newUser = User(

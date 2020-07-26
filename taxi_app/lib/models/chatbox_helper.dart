@@ -19,9 +19,16 @@ class ChatHelper{
   }
 
   addConversationMessages(String chatRoomId, Map<String,dynamic> messageMap){
+    print(chatRoomId);
     Firestore.instance.collection("chatRoom").document(chatRoomId).collection("chats").add(messageMap).catchError((e){
       print(e.toString());
     });
+  }
+
+  deleteCoversationMessgae(String chatRoomId, Map<String,dynamic> messageMap){
+    print(chatRoomId);
+    dynamic msg = Firestore.instance.collection("chatRoom").document(chatRoomId).collection("chats").document();   
+    print(msg);
   }
 
   getConversationMessages(String chatRoomId){

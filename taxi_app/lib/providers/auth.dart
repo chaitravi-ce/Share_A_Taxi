@@ -1,16 +1,15 @@
 import 'dart:async';
-import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http; 
-
-import '../widgets/http_exception.dart';
+//import 'package:http/http.dart' as http; 
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth with ChangeNotifier{
   String token;
   DateTime expiryDate;
   String userId;
+  String verificationId;
 
   bool get isAuth {
     //tryAutoLogin();
@@ -20,44 +19,43 @@ class Auth with ChangeNotifier{
     return false;
   }
   
-
-  Future<void> signup(String username, String password) async {
-    final url =
-      'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCE4eIGuIXww0YRBda6xsaN2fxzSiKY_cA';
-    try {
-      final response = await http.post(
-        url,
-        body: json.encode(
-          {
-            'email': username,
-            'password': password,
-            'returnSecureToken': true,
-          },
-        ),
-      );
-      final responseData = json.decode(response.body);
-      if (responseData['error'] != null) {
-        throw HttpException(responseData['error']['message']);
-      }
-      print('authenticated');
-      notifyListeners();
-    } catch (error) {
-      throw error;
-    }
+  signIn(AuthCredential creds){
+    print('in signin');
+    FirebaseAuth.instance.signInWithCredential(creds);
   }
 
-  Future<bool> tryAutoLogin()async{
-    final prefs = await SharedPreferences.getInstance();
-    token = prefs.get('token');
-    print('=================================================================');
-    print(token);
-    if(token == null){
-      notifyListeners();
-      return false;
-    }
-    notifyListeners();
-    return true;
-  } 
+  Future registerUser(String mobile) async{
+
+    final PhoneVerificationCompleted verified = (AuthCredential authResult){
+      print('verified');
+      signIn(authResult);
+    };
+
+    final PhoneVerificationFailed verifiedFailed = (AuthException authException){
+      print('failed');
+      print(authException.toString());
+    };
+
+    final PhoneCodeSent codeSent = (String verId, [int forceResend]){
+      print('code sent');
+      this.verificationId = verId;
+    };
+
+    final PhoneCodeAutoRetrievalTimeout autoTimeout = (String verId){
+      print('timeout');
+      this.verificationId = verId;
+    };
+
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    _auth.verifyPhoneNumber(
+      phoneNumber: mobile,
+      timeout: Duration(seconds: 60),
+      verificationCompleted: verified,
+      verificationFailed: verifiedFailed,
+      codeSent: codeSent,
+      codeAutoRetrievalTimeout: autoTimeout,
+    );
+  }
 
   Future<void> logout() async{
     token = null;

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:taxi_app/screens/chat_list_screen.dart';
 import 'package:taxi_app/screens/edit_profile_screen.dart';
 import 'package:taxi_app/screens/info_screen.dart';
+import 'package:taxi_app/screens/settings.dart';
 import './screens/loginScreen.dart';
 import './screens/welcome_screen.dart';
 import './screens/signup_screen.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: Auth())
       ],
       child: MaterialApp(
-        title: 'Same Location, Same Taxi',
+        title: 'Share A Taxi',
         theme: ThemeData(
           primaryColor: Color(0xFF6F35A5),
           accentColor: Color(0xFFF1E6FF),
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
           InfoScreen.routeName : (ctx) => InfoScreen(),
           ChatListScreen.routeName : (ctx) => ChatListScreen(),
           EditProfileScreen.routeName : (ctx) => EditProfileScreen(),
+          Settings.routeName : (ctx) => Settings(),
         },
       )
     );

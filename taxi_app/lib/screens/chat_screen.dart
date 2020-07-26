@@ -54,57 +54,57 @@ class _ChatScreenState extends State<ChatScreen> {
       body: Stack(children: <Widget>[
         chatMessages(),
         Container(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                color: Color(0x54FFFFFF),
-                padding: EdgeInsets.symmetric(horizontal: 24,vertical: 16),
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [
-                        Color.fromRGBO(247, 202, 201, 1),
-                        Theme.of(context).accentColor
-                      ]),
-                      borderRadius: BorderRadius.circular(30)
-                    ),
-                  child: Row(children: <Widget>[
-                    Expanded(
-                      child: TextField(
-                        controller: message,
-                        decoration: InputDecoration(
-                          hintText: 'Message',
-                          hintStyle: GoogleFonts.fondamento(color: Color.fromRGBO(51, 0, 50, 1)),
-                          border: InputBorder.none
-                        ),
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(colors: [
-                          Theme.of(context).primaryColor,
-                          Color.fromRGBO(51, 0, 50, 1),
-                        ]),
-                        borderRadius: BorderRadius.circular(30)
-                      ),
-                      child: IconButton(
-                        icon: Icon(Icons.send,color: Colors.white,),
-                        onPressed: () {
-                          print('==============================');
-                          Map<String,dynamic> messageMap = {
-                            'message' : message.text,
-                            'sentBy' : Profilee.mydefineduser['name'],
-                            'time' : DateTime.now().millisecondsSinceEpoch
-                          };
-                          message.text = '';
-                          if(message.text != ''){
-                            chatHelper.addConversationMessages(widget.chatId, messageMap);
-                          }                        
-                        },
-                      ),
-                    ),
-                  ],
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            color: Color(0x54FFFFFF),
+            padding: EdgeInsets.symmetric(horizontal: 24,vertical: 16),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [
+                  Color.fromRGBO(247, 202, 201, 1),
+                  Theme.of(context).accentColor
+                ]),
+                borderRadius: BorderRadius.circular(30)
               ),
+              child: Row(children: <Widget>[
+                Expanded(
+                  child: TextField(
+                    controller: message,
+                    decoration: InputDecoration(
+                      hintText: 'Message',
+                      hintStyle: GoogleFonts.fondamento(color: Color.fromRGBO(51, 0, 50, 1)),
+                      border: InputBorder.none
+                    ),
+                  ),
                 ),
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(colors: [
+                      Theme.of(context).primaryColor,
+                      Color.fromRGBO(51, 0, 50, 1),
+                    ]),
+                    borderRadius: BorderRadius.circular(30)
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.send,color: Colors.white,),
+                    onPressed: () {
+                      print('==============================');
+                      Map<String,dynamic> messageMap = {
+                        'message' : message.text,
+                        'sentBy' : Profilee.mydefineduser['name'],
+                        'time' : DateTime.now().millisecondsSinceEpoch
+                      };
+                      if(message.text != ''){
+                        chatHelper.addConversationMessages(widget.chatId, messageMap);
+                      } 
+                      message.text = '';                       
+                    },
+                  ),
+                ),
+              ],
+            ),
+            ),
             ),
           )
         ],
@@ -119,51 +119,106 @@ class MessageTile extends StatelessWidget {
   final bool isSentByMe;
   MessageTile(this.message,this.isSentByMe);
 
+  dynamic showExitDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(
+          'Delete this Message ?',
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontWeight: FontWeight.bold
+          ),
+        ),
+        content: Text(
+          'This will delete the message for everyone',
+          style: TextStyle(
+            color: Theme.of(context).primaryColor
+          ),
+        ),
+        actions: <Widget>[
+          Row(
+            children: <Widget>[
+              FlatButton(
+                child: Text(
+                  'Okay',
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
+                onPressed: () {
+                  ChatHelper chatHelper = new ChatHelper();
+                  //chatHelper.deleteCoversationMessgae(chatRoomId, messageMap);
+                  Navigator.of(ctx).pop();
+                },
+              ),
+              FlatButton(
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-        top: 8,
-        bottom: 8,
-        left: isSentByMe ? 0 : 24,
-        right: isSentByMe ? 24 : 0
-      ),
-      alignment: isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
+    return GestureDetector(
+      onLongPress: (){
+        if(isSentByMe){
+          print('yes');
+          showExitDialog(context);
+        }
+      },
       child: Container(
-        margin: isSentByMe
-          ? EdgeInsets.only(left: 30)
-          : EdgeInsets.only(right: 30),
-        padding: EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
-        decoration: BoxDecoration(
-          borderRadius: isSentByMe ? BorderRadius.only(
-            topLeft: Radius.circular(23),
-            topRight: Radius.circular(23),
-            bottomLeft: Radius.circular(23)
-          ) : 
-          BorderRadius.only(
-            topLeft: Radius.circular(23),
-            topRight: Radius.circular(23),
-            bottomRight: Radius.circular(23)
-          ),
-          gradient: LinearGradient(
-            colors: isSentByMe ? 
-            [
-              Theme.of(context).primaryColor,
-              Color.fromRGBO(51, 0, 50, 1),
-            ]
-          : [
-              Color.fromRGBO(247, 202, 201, 1),
-              Theme.of(context).accentColor
-            ],
-            )
-          ),
-          child: Text(
-            message, 
-            textAlign: TextAlign.start,
-            style: GoogleFonts.fondamento(
-            color: isSentByMe ? Colors.white : Colors.black,
-            fontSize: 18
-          ),),
+        padding: EdgeInsets.only(
+          top: 8,
+          bottom: 8,
+          left: isSentByMe ? 0 : 24,
+          right: isSentByMe ? 24 : 0
+        ),
+        alignment: isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
+        child: Container(
+          margin: isSentByMe
+            ? EdgeInsets.only(left: 30)
+            : EdgeInsets.only(right: 30),
+          padding: EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
+          decoration: BoxDecoration(
+            borderRadius: isSentByMe ? BorderRadius.only(
+              topLeft: Radius.circular(23),
+              topRight: Radius.circular(23),
+              bottomLeft: Radius.circular(23)
+            ) : 
+            BorderRadius.only(
+              topLeft: Radius.circular(23),
+              topRight: Radius.circular(23),
+              bottomRight: Radius.circular(23)
+            ),
+            gradient: LinearGradient(
+              colors: isSentByMe ? 
+              [
+                Theme.of(context).primaryColor,
+                Color.fromRGBO(51, 0, 50, 1),
+              ]
+            : [
+                Color.fromRGBO(247, 202, 201, 1),
+                Theme.of(context).accentColor
+              ],
+              )
+            ),
+            child: Text(
+              message, 
+              textAlign: TextAlign.start,
+              style: GoogleFonts.fondamento(
+              color: isSentByMe ? Colors.white : Colors.black,
+              fontSize: 18
+            ),),
+        ),
       ),
     );
   }

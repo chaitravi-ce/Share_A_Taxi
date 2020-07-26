@@ -29,6 +29,7 @@ dependencies:
   location: ^3.0.0
   google_maps_flutter: ^0.5.28+1
   firebase_auth: ^0.16.1
+  firebase_core: ^0.4.5
   geolocator: ^5.3.2+2
   progress_indicators: ^0.1.5
   geocoder: ^0.2.1

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taxi_app/models/save_image.dart';
 import 'package:taxi_app/providers/request.dart';
 import 'package:taxi_app/screens/bill_splitter.dart';
 import 'package:provider/provider.dart';
 import 'package:taxi_app/screens/chat_list_screen.dart';
 import 'package:taxi_app/screens/ride_request_screen.dart';
+import 'package:taxi_app/screens/settings.dart';
 import 'package:taxi_app/screens/welcome_screen.dart';
 import '../screens/rickshaw_rates_screen.dart';
 import '../screens/taxi_rates_screens.dart';
@@ -13,16 +16,58 @@ import '../screens/profile.dart';
 import '../providers/auth.dart';
 import './profilemodel.dart';
 
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends StatefulWidget {
 
+  @override
+  _AppDrawerState createState() => _AppDrawerState();
+}
+
+class _AppDrawerState extends State<AppDrawer> {
   final name = Profilee.mydefineduser['name'];
+  Image image;
+
+  loadImageFromPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final imageKeyValue = prefs.getString(IMAGE_KEY);
+    if (imageKeyValue != null) {
+      final imageString = await ImageSharedPrefs.loadImageFromPrefs();
+      setState(() {
+        image = ImageSharedPrefs.imageFrom64BaseString(imageString);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    loadImageFromPrefs();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: SingleChildScrollView(
         child: Column(children: <Widget>[
           AppBar(
-            title: Text('Hello $name', style: GoogleFonts.alice(color: Colors.white, fontWeight: FontWeight.bold)),
+            title: Container(
+              child: Row(
+                children: <Widget>[
+                  CircleAvatar(
+                    backgroundColor: Theme.of(context).accentColor,
+                    backgroundImage: image != null ?image.image : null,                     
+                    radius: 20,
+                  ),
+                  SizedBox(width: 8,),
+                  Text(
+                    'Hello $name', 
+                    style: GoogleFonts.alice(
+                      color: Colors.white, 
+                      fontWeight: FontWeight.bold
+                    )
+                  ),
+                ],
+              ),
+            ),
             automaticallyImplyLeading: false,
             backgroundColor: Color.fromRGBO(51, 0, 50, 1),
           ),
@@ -129,7 +174,7 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(Icons.settings, color: Color.fromRGBO(51, 0, 50, 1),),
             title: Text('Settings',style: GoogleFonts.alice(color: Color.fromRGBO(51, 0, 50, 1),),),
             onTap: () {
-              
+              Navigator.of(context).pushReplacementNamed(Settings.routeName);
             },
           ),
           ListTile(

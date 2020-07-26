@@ -77,9 +77,9 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!isValid) {
       return;
     }
-    setState(() {
-      _isLoading = true;
-    });
+    //setState(() {
+    //  _isLoading = true;
+    //});
     _formKey.currentState.save();
     print(_usernameController.text);
     print(_passwordController.text);   
@@ -99,8 +99,8 @@ class _LoginScreenState extends State<LoginScreen> {
     prefs.setString("email", responseData['email']);
     prefs.setString("token", responseData['idToken']);
     prefs.setString("userId", responseData['localId']);
-    final expiryDate = DateTime.now().add(Duration(seconds: int.parse(responseData['expiresIn'],),),);
-    prefs.setString('expiryDate', expiryDate.toString());
+    //final expiryDate = DateTime.now().add(Duration(seconds: int.parse(responseData['expiresIn'],),),);
+    //prefs.setString('expiryDate', expiryDate.toString());
     print("===================================");
     print(responseData);
     if(responseData['error']!=null){

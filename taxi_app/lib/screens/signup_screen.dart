@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -6,8 +8,8 @@ import 'loginScreen.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import '../widgets/ui_Container.dart';
 import '../providers/user.dart';
+import 'package:http/http.dart' as http;
 import '../providers/auth.dart';
-import '../widgets/http_exception.dart';
 import '../providers/users.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -145,11 +147,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
         id: DateTime.now().toString(),
       );
       print(_newUser.username+" hiiiiiiii"+_newUser.password);
-      try{
-        await Provider.of<Auth>(context, listen:false).signup(_newUser.username, _newUser.password);
-      }on HttpException catch (error) {
-        print("==================");
-        print(error);
+      final url ='https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCE4eIGuIXww0YRBda6xsaN2fxzSiKY_cA';
+      final response = await http.post(
+      url,
+      body: json.encode(
+        {
+          'email': _usernameController.text,
+          'password': _pass1Controller.text,
+          'returnSecureToken': true,
+        },
+      ),
+      );
+      final responseData = json.decode(response.body);
+      if(responseData['error']!=null){
+      var error = responseData['error']['message'];
       var errorMessage = 'Authentication failed';
       if (error.toString().contains('EMAIL_EXISTS')) {
         errorMessage = 'This email address is already in use.';
@@ -157,34 +168,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
         errorMessage = 'This is not a valid email address';
       } else if (error.toString().contains('WEAK_PASSWORD')) {
         errorMessage = 'This password is too weak.';
-      } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
-        errorMessage = 'Could not find a user with that email.';
-      } else if (error.toString().contains('INVALID_PASSWORD')) {
-        errorMessage = 'Invalid password.';
       }
-      _showErrorDialog(errorMessage);
+      print("hhhh============================================"); 
       setState(() {
         _isLoading = false;
-      });
-      return;
-    } catch (error) {
-      const errorMessage = 'Could not authenticate you. Please try again later.';
-      _showErrorDialog(errorMessage);
-      throw(error);
-      
-    }
+      });   
+      return _showErrorDialog(errorMessage);
+    }else{
       print('signup verification done');
       setState(() {
         _isLoading = false;
       });
-      await Provider.of<Users>(context, listen: false).addUser(_newUser);
+      Provider.of<Auth>(context, listen:false).registerUser(_noController.text);
       _showSuccessDialog();
+      await Provider.of<Users>(context, listen: false).addUser(_newUser);
       print('User added');
       print(_newUser.name);
       print(_newUser.contactNo);
       print(_newUser.username);
       print(_newUser.password);
       //print(Provider.of<Auth>(context, listen: false).userId);
+    }
     }
 
     Size size = MediaQuery.of(context).size;
@@ -224,7 +228,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Column(children: <Widget>[
                   UiContainer(
                     TextFormField(
-                      autovalidate: true,
+                     
                       decoration: InputDecoration(
                         icon: Icon(Icons.person, color: Theme.of(context).primaryColor,),
                         hintText: 'Name'
@@ -245,7 +249,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   UiContainer(
                     TextFormField(
-                      autovalidate: true,
+                      
                       decoration: InputDecoration(
                         icon: Icon(Icons.contact_phone, color: Theme.of(context).primaryColor,),
                         hintText: 'Contact No.'
@@ -271,7 +275,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   UiContainer(
                     TextFormField(
-                      autovalidate: true,
+                      
                       decoration: InputDecoration(
                         icon: Icon(Icons.account_circle, color: Theme.of(context).primaryColor,),
                         hintText: 'Username (Email ID)'
@@ -294,7 +298,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   UiContainer(
                     TextFormField(
-                      autovalidate: true,
+                  
                       obscureText: _obscureText,
                       decoration: InputDecoration(
                         icon: Icon(Icons.lock, color: Theme.of(context).primaryColor,),
